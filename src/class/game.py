@@ -41,6 +41,8 @@ class Game :
         
         self.infiniteTime = False #Cheat for developpers
         
+
+
     def draw(self):
         for d, v in self.drawables.items():
             if v == True:
@@ -372,9 +374,9 @@ class Game :
                         return 1
 
     def chooseMode(self):
-        button1 = Button((int(self.width/2 - 350),int(self.height/2 + 30)), 1, 200, 60 , (200, 50, 50), RED, "Survival mode")
-        button2 = Button((int(self.width/2 - 100), int(self.height /2+ 30)), 2, 200, 60 , (200, 50, 50), RED, "Speed mode") 
-        button3 = Button((int(self.width/2 + 150),int(self.height /2+ 30)), 3, 200, 60 , (200, 50, 50), RED, "Experience mode") 
+        button1 = Button((int(self.width/2 - 350),int(self.height/2 + 30)), 1, 200, 60 , (200, 50, 50), Colors.RED, "Survival mode")
+        button2 = Button((int(self.width/2 - 100), int(self.height /2+ 30)), 2, 200, 60 , (200, 50, 50), Colors.RED, "Speed mode") 
+        button3 = Button((int(self.width/2 + 150),int(self.height /2+ 30)), 3, 200, 60 , (200, 50, 50), Colors.RED, "Experience mode") 
         self.addListenerDrawable([button1,button2, button3])
         self.refreshScreen()
         self.write_screen("Choose Your Mode", Colors.BLACK, (self.width/2, self.height/2 - 30))
@@ -559,7 +561,7 @@ class Game :
 
             self.running = True
             while (self.running):
-                self.refreshScreen(True)
+                self.refreshScreen(False)
                 self.write_screen("When you are ready, touch SPACE ", Colors.BLACK, (self.width/2, self.height/2 - 30))
                 pygame.display.update()
 
