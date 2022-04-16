@@ -27,6 +27,8 @@ def main():
     text_input_box = TextInputBox((WIDTH/2, HEIGHT/2), WIDTH, HEIGHT, font, screen, color=Colors.RED, bg_color_text=Colors.GREEN)
     group = pygame.sprite.Group(text_input_box)
 
+    nom_participant = "" 
+    prenom_participant = "" 
 
     while running:
         event_list = pygame.event.get()
@@ -36,7 +38,18 @@ def main():
                 break
             if event.type == pygame.MOUSEBUTTONDOWN:    
                 if (text_input_box.button_ok.isInside(pygame.mouse.get_pos())):
-                    running = False
+                    
+                    if nom_participant == "":
+                        nom_participant = text_input_box.text 
+                        text_input_box.set_text()
+                        print("nom : ", nom_participant)
+                    if prenom_participant == "":
+                        prenom_participant = text_input_box.text
+                        print("prenom : ", prenom_participant)
+                    if nom_participant != "" and prenom_participant !="" :
+                        running = False
+                        
+            
         group.update(event_list)
         group.draw(screen)
         pygame.display.flip()
