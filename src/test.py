@@ -1,15 +1,14 @@
 import pygame 
 import sys
-sys.path.append('./tools')
 sys.path.append('./class')
-from drawable import *
-from game import *
-from cible import *
-from target_disposition import *
-from healthBar import *
-from textInputBox import *
+sys.path.append('./tools')
 import colors as Colors
+import experiment 
 
+"""
+Fichier test qui permet de faire une experience pour 1 partipicant
+Remarque : la gestion des tests (choix des cibles, des modes, etc...) se fait dans le fichier experiment.py
+"""
 
 def main():
     pygame.init()
@@ -17,45 +16,11 @@ def main():
     WIDTH = infoObject.current_w - 200
     HEIGHT = infoObject.current_h - 200
     
+    experience_1 = experiment.Experiment(WIDTH, HEIGHT, color=Colors.RED, bg_color=Colors.WHITE, bg_color_text=Colors.GREEN)
     
-    game = Game(WIDTH, HEIGHT)
-    running = True
-   
-    font = pygame.font.SysFont("aerial", 60)
-    screen = pygame.display.set_mode((WIDTH, HEIGHT))
-
-    text_input_box = TextInputBox((WIDTH/2, HEIGHT/2), WIDTH, HEIGHT, font, screen, color=Colors.RED, bg_color_text=Colors.GREEN)
-    group = pygame.sprite.Group(text_input_box)
-
-    nom_participant = "" 
-    prenom_participant = "" 
-
-    while running:
-        event_list = pygame.event.get()
-        for event in event_list:
-            if event.type == pygame.QUIT:
-                running = False
-                break
-            if event.type == pygame.MOUSEBUTTONDOWN:    
-                if (text_input_box.button_ok.isInside(pygame.mouse.get_pos())):
-                    
-                    if nom_participant == "":
-                        nom_participant = text_input_box.text 
-                        text_input_box.set_text()
-                        print("nom : ", nom_participant)
-                    if prenom_participant == "":
-                        prenom_participant = text_input_box.text
-                        print("prenom : ", prenom_participant)
-                    if nom_participant != "" and prenom_participant !="" :
-                        running = False
-                        
-            
-        group.update(event_list)
-        group.draw(screen)
-        pygame.display.flip()
-
-    game.menu("chooseMode")
-    print(game.cursor_position_list)
+    #experienceMulti
+    experience_1.play("experienceMulti")
+    
     pygame.quit()
     exit()
 

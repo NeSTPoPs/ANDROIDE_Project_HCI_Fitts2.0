@@ -1,29 +1,33 @@
-from cgitb import text
 import sys
-from tkinter import Button
 sys.path.append('./tools')
 import pygame
 import colors as Colors
-from button import * 
+from button import *
+
+"""
+Ce fichier permet de creer une page avec un input box de text, cad on peut ecrire dans l'interface
+"""
 
 
 class TextInputBox(pygame.sprite.Sprite):
     def __init__(self, pos, width, height, font, screen, width_texte=400, height_texte=10, color=Colors.BLACK, bg_color=Colors.WHITE, bg_color_text = Colors.WHITE):
         super().__init__()
+        self.font = font
+        self.screen = screen
+        self.width = width
+        self.height = height
+        self.pos = pos
+
         self.color = color
         self.bg_color = bg_color
         self.bg_color_text = bg_color_text
-        self.pos = pos
-        self.width = width
-        self.height = height
+        
         self.width_texte = width_texte
         self.height_texte = height_texte
-        self.font = font
-        self.screen = screen
+        
         self.active = False
         self.text = ""
-        self.render_text()
-        #self.rect = None
+        self.rect = None
         self.button_ok = Button((int(self.width/2),int(self.height/2 + 100)), 1, 200, 60 , (200, 50, 50), Colors.RED, "Ok")
         self.have_name = False
 
@@ -53,11 +57,14 @@ class TextInputBox(pygame.sprite.Sprite):
         self.button_ok.draw(self)
 
         for event in event_list:
+        
             if event.type == pygame.MOUSEBUTTONDOWN:    
                 if (self.button_ok.isInside(pygame.mouse.get_pos())):
                     self.active = False
             if event.type == pygame.KEYDOWN : 
-                if event.key == pygame.K_BACKSPACE:
+                if event.key == pygame.K_RETURN:
+                    self.active = False
+                elif event.key == pygame.K_BACKSPACE:
                     self.text = self.text[:-1]
                 elif event.key == pygame.K_RETURN:
                     self.text = self.text
