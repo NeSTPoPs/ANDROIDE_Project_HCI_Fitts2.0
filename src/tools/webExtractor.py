@@ -20,14 +20,15 @@ def extractPosition(url, displayInfo = True):
     #elements = driver.find_elements(By.XPATH, '//button')
     #elements += driver.find_elements(By.XPATH, '//link')
     #elements = driver.find_elements_by_id("link")
-    #elements = driver.find_elements_by_xpath("//a[@href]") #On récupère tous les liens de la page
+    elements = driver.find_elements_by_xpath("//a[@href]") #On récupère tous les liens de la page
+    
     #elements = driver.find_elements_by_xpath("//a[@href][not(child::node()[1])]")
 
-    elements = driver.find_elements_by_xpath("//a[@href]\
-        [not( /location/@x <= /anscestor::node()//location/@x +  location/@width \
-            and location/@x >= /anscestor::node()//location/@x ) ] \
-        ")
-    print("=======fin======")
+    #elements = driver.find_elements_by_xpath("//a[@href]\
+    #    [not( /location/@x <= /anscestor::node()//location/@x +  location/@width \
+    #        and location/@x >= /anscestor::node()//location/@x ) ] \
+    #    ")
+    #print("=======fin======")
     cibles = []
     for element in elements:
         position = element.rect

@@ -26,8 +26,8 @@ Ce fichier permet l'interaction des cibles et l'interface et contient les diffé
 
 class Game :
     def __init__(self, width, height, font, screen, bg_color = Colors.WHITE):
-        self.font      = font
-        self.screen    = screen
+        self.font      = font  #pygame.font.SysFont("aerial", 60)
+        self.screen    = screen  #pygame.display.set_mode((width, height))
         pygame.display.set_caption("TEST CIBLES")
         self.width     = width
         self.height    = height
@@ -272,14 +272,12 @@ class Game :
         elif menu_title == "experience":
             pygame.time.set_timer(pygame.USEREVENT, 10) #Active pygame.USEREVENT toute les 10ms 
             self.experimentMode()
-
         elif menu_title == 'experienceMulti':
             pygame.time.set_timer(pygame.USEREVENT, 10) #Active pygame.USEREVENT toute les 10ms 
             self.experimentMultiTarget()
-            
         else:
             raise Exception("Error of menu_title")
-      
+       
     def quitApp(self):
         """
             Sauvegarde dans un fichier 'resultat.txt' les differents cibles atteintes avec les positions du curseur
@@ -386,16 +384,16 @@ class Game :
     def play(self, mode="", listTarget=[], showTime=True, displayConsolNbOfTarget = True) :
         """
             Interface de jeu : elle affiche les cibles, le temps restant et la barre de temps
-            
+            Remarque : si on n'a pas de cible, on choisit par defaut les cibles en densite
         """
         self.running = True
-        targets = listTarget
         
-        if targets == []:
+        if listTarget == []:
             # par defaut, on choisit des cibles en densite
             targets = make_2D_distractor_target_list((self.width, self.height), (int(self.width/2), int(self.height/2) ), 3, 40, 0.25, Colors.BLACK)
             self.addListenerDrawable(targets)
         else :
+            targets = listTarget
             self.addListenerDrawable(targets)
         
         if displayConsolNbOfTarget :
@@ -453,8 +451,9 @@ class Game :
                         self.removeListenerDrawable(targets)
                         return 1
 
-    def quickMode(self):
+    def quickMode(self, nb_trials = 10):
         self.running = True
+
         if self.listTarget==[]:
             targets = make_2D_distractor_target_list((self.width, self.height), (int(self.width/2), int(self.height/2) ), 3, 40, 0.25, Colors.BLACK)
         else:
@@ -462,11 +461,16 @@ class Game :
             
         self.addListenerDrawable(targets)
         self.assignRandomTarget()
+        
+        
         self.addDrawable(self.barTime)
         
         self.cursor_position = []
         self.cursor_position.append(("target_pos :",(self.active_target.x,self.active_target.y)))
-        while (self.running):
+
+        cpt = 0
+        while (self.running and cpt < nb_trials):
+            cpt += 1
             self.refreshScreen(False)
             
             #Display Timer
@@ -501,7 +505,10 @@ class Game :
                 if ("cible", False) in L:
                     self.barTime.timer -= 1             
     
-    def distractorMode(self, ID = 3, A = 40, p = 0.25, color = Colors.BLACK, nb_trials = 10):
+    def distractorMode(self, ID = 3, A = 40, p = 0.25, color = Colors.BLACK, nb_trials = 10, show_time = False):
+        """
+            Deplace les cibles a la position du curseur lorsqu'on a atteint la cible
+        """
         print("DISTRACTOR MODE")
         print("Avant ajout :",len(self.listener))
         if self.listTarget==[]:
@@ -515,19 +522,19 @@ class Game :
         print(self.active_target, self.active_target.x, self.active_target.y, self.width, self.height) 
         print("Apres ajout :",len(self.listener))
         
-        self.addDrawable(self.barTime)
+        if show_time:
+            self.addDrawable(self.barTime)
 
         cursor_position = []
         cursor_position_list = []
         cursor_position.append(("target_pos :",(self.active_target.x,self.active_target.y)))
         
         cpt = 0
-        #while (self.running and cpt < nb_trials):
-        while (self.running):
+        while (self.running and cpt < nb_trials):
             self.refreshScreen(False)
             
-            #Display Timer
-            self.write_screen("Time : " + "{:.1f}".format(self.barTime.timer), Colors.BLACK, self.barTime.posText, True)
+            if show_time: #Display Timer
+                self.write_screen("Time : " + "{:.1f}".format(self.barTime.timer), Colors.BLACK, self.barTime.posText, True)
             pygame.display.update()
 
             ev = pygame.event.get()
@@ -558,7 +565,8 @@ class Game :
                     cursor_position_list.append(cursor_position)
                     cursor_position = []
                     cursor_position.append(("target_pos :",(self.active_target.x,self.active_target.y)))
-                    #Repositioning targets with mouse position
+                    
+                    ## Repositioning targets with mouse position
                     
                     #Removing ancient targets
                     self.removeListenerDrawable(L_targets)
@@ -586,16 +594,19 @@ class Game :
 
     def experimentMultiTarget(self, choose_random=True):
         """
-            Suppose : on a deja ajouté des cibles 
+            Suppose : listTest is NOT null (it means we have to do a test of Target) 
+                      listTest : dict[ string : [int, list[Cible]] ]
         """
         quitGame = False
         while(self.nbTestTotal > 0):  
             ## Choose random a type of disposition of target 
 
-            # key : String (typeTarget: "circle", "densite", etc... ) 
+            # key : String (key represents the typeTarget: "circle", "densite", etc... ) 
             if choose_random:
                 key = random.choice(list(self.listTest))
-                
+            else :
+                key = list(self.listTest)[0]
+
             # value = [int, list[cible]]
             value = self.listTest[key]
             print("---- key(typeTarget) =", key, "||", "nombre =", value[0])
@@ -635,4 +646,4 @@ class Game :
         if quitGame:
             self.quitApp()
         if self.nbTestTotal == 0:
-            print("FIN DE EXPERIENCE") 
+            print("END OF EXPERIENCE") 

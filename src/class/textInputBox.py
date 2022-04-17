@@ -32,8 +32,11 @@ class TextInputBox(pygame.sprite.Sprite):
         self.have_name = False
 
     def set_text(self, mot = "", have_name = True):
+        """
+            Remplace le text par mot
+        """
         self.text = mot
-        self.have_name = have_name
+        #self.have_name = have_name
 
     def render_text(self):
         texte = self.font.render(self.text, True, self.color, self.bg_color_text)
@@ -45,14 +48,15 @@ class TextInputBox(pygame.sprite.Sprite):
         pygame.draw.rect(self.image, self.color, self.image.get_rect().inflate(-5, -5), 2) 
         self.rect = self.image.get_rect(topleft = self.pos)
 
-    def update(self, event_list):
+    def update(self, event_list, phrase = ""):
         self.screen.fill(self.bg_color)
         
-        if self.have_name == False :
-            phrase = self.font.render("Veuillez mettre votre nom", True, Colors.BLACK)
-        else : 
-            phrase = self.font.render("Veuillez mettre votre prenom", True, Colors.BLACK)
-        self.screen.blit(phrase,(self.pos[0]-30, self.pos[1]-50))
+        #if self.have_name == False :
+        #    phrase = self.font.render("Veuillez mettre votre nom", True, Colors.BLACK)
+        #else : 
+        #    phrase = self.font.render("Veuillez mettre votre prenom", True, Colors.BLACK)
+        phrase_interface = self.font.render(phrase, True, Colors.BLACK)
+        self.screen.blit(phrase_interface,(self.pos[0]-30, self.pos[1]-50))
         
         self.button_ok.draw(self)
 

@@ -1,11 +1,8 @@
 import sys
 sys.path.append('./tools')
 sys.path.append('./class')
-from drawable import *
 from game import *
-from cible import *
-from target_disposition import *
-from healthBar import *
+from target_disposition import * 
 import colors as Colors
 import pygame 
 
@@ -23,19 +20,20 @@ def main():
     #game.addListenerDrawable(make_2D_distractor_target_list((WIDTH,HEIGHT), (int(WIDTH/2), int(HEIGHT/2) ), 3, 40, 0.25, Colors.BLACK))
     
     ## Experience avec Mode 
-    game.menu("chooseMode")
-    
+    #game.menu("chooseMode")
+    game.menu("experience")
+
     ## Experience avec Differents Types de disposition des cibles
     #nb_exp_circle = 3
     #key_circle = "circle"
-    #game.addTest(nb_exp_circle, key_circle, make_circle_target_list((WIDTH/2,HEIGHT/2), HEIGHT/3, 10, Colors.DARK_GREEN, 90))
+    #game.addTest(nb_exp_circle, key_circle, make_circle_target_list((WIDTH/2,HEIGHT/2), HEIGHT/3, 10, Colors.DARK_GREEN, 50))
     #nb_exp_2D = 2
     #key_densite = "densite"
     #game.addTest(nb_exp_2D, key_densite, make_2D_distractor_target_list((WIDTH,HEIGHT), (int(WIDTH/2), int(HEIGHT/2) ), 3, 40, 0.25, Colors.BLACK))
-    
+
     #game.menu("experienceMulti")
-    print("==============")
+    #print("==============")
     #print(game.cursor_position_list)
-    
+
 if __name__ == "__main__":
     main()

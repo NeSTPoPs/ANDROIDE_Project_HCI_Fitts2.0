@@ -1,13 +1,10 @@
 import sys
 sys.path.append('./tools')
 sys.path.append('./class')
-from drawable import *
 from game import *
-from cible import *
-from target_disposition import *
-from healthBar import *
 import webExtractor as webEx
 import colors as Colors
+import pygame
 
 URL = "https://fr.wikipedia.org/wiki/Wikip%C3%A9dia:Accueil_principal"
 
@@ -16,8 +13,10 @@ def main():
     infoObject = pygame.display.Info()
     WIDTH = infoObject.current_w - 200
     HEIGHT = infoObject.current_h - 200
-    game = Game(WIDTH, HEIGHT)
-    running = True
+    font = pygame.font.SysFont("aerial", 60)
+    screen = pygame.display.set_mode((WIDTH, HEIGHT))
+        
+    game = Game(WIDTH, HEIGHT, font, screen)
     
     #Generating targets with URL
     game.listTarget = webEx.getTargetsFromUrl(URL, WIDTH, HEIGHT, displayInfo = True)

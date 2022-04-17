@@ -26,8 +26,6 @@ class Experiment:
         self.nom_participant = "" 
         self.prenom_participant = "" 
         
-    
-
 
     def insert_name(self):
         """
@@ -44,25 +42,57 @@ class Experiment:
                     break
                 if event.type == pygame.MOUSEBUTTONDOWN:    
                     if (self.text_input_box.button_ok.isInside(pygame.mouse.get_pos())):
-                        if self.nom_participant == "":
-                            self.nom_participant = self.text_input_box.text 
-                            self.text_input_box.set_text()
+                        if self.nom_participant == "" :
+                            self.nom_participant = self.text_input_box.text  #recupere le nom
+                            self.text_input_box.set_text() #remet le text a vide
                             print("nom : ", self.nom_participant)
-                        elif self.prenom_participant == "":
-                            self.prenom_participant = self.text_input_box.text
+                        elif self.prenom_participant == "" : 
+                            self.prenom_participant = self.text_input_box.text #recupere le prenom
+                            self.text_input_box.set_text() #remet le text a vide
                             print("prenom : ", self.prenom_participant)
-                        if self.nom_participant != "" and self.prenom_participant !="" :
+                        if self.nom_participant != "" and self.prenom_participant != "" :
                             running = False
-            group.update(event_list)
+
+            if self.nom_participant =="":
+                group.update(event_list, "Veuillez mettre votre nom")
+            elif self.prenom_participant == "":
+                group.update(event_list, "Veuillez mettre votre prenom")
+
             group.draw(self.screen)
             pygame.display.flip()
 
 
-    def play(self , mot="chooseMode"):
+    def insert_avis(self):
+        """
+            Le participant peut laisser un avis
+            Remarque : on peut avoir un avis vide
+        """
+        avis = ""
+        group = pygame.sprite.Group(self.text_input_box) 
+        running = True
+        while running:
+            event_list = pygame.event.get()
+            for event in event_list:
+                if event.type == pygame.QUIT:
+                    running = False
+                    break
+                if event.type == pygame.MOUSEBUTTONDOWN:    
+                    if (self.text_input_box.button_ok.isInside(pygame.mouse.get_pos())):
+                        avis = self.text_input_box.text #recupere avis
+                        running = False
+            group.update(event_list, "Laissez nous un avis")
+            group.draw(self.screen)
+            pygame.display.flip()
+        return avis
+
+    def play(self, mot="chooseMode"):
         """
             
         """
         self.insert_name()
 
-        self.game.menu(mot)
-        print(self.game.cursor_position_list)
+        #self.game.menu(mot)
+        self.game.experimentMode()
+        avis = self.insert_avis()
+        print("avis : ", avis)
+        #print(self.game.cursor_position_list)

@@ -19,7 +19,7 @@ def main():
     experience_1 = experiment.Experiment(WIDTH, HEIGHT, color=Colors.RED, bg_color=Colors.WHITE, bg_color_text=Colors.GREEN)
     
     #experienceMulti
-    experience_1.play("experienceMulti")
+    experience_1.play()
     
     pygame.quit()
     exit()
